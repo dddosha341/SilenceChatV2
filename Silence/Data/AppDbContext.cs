@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Silence.Web.Entities;
+using TaskManagement.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Silence.Web.Data
+namespace TaskManagement.Infrastructure.Data
 {
     public class AppDbContext : DbContext
     {

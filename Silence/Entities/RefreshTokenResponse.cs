@@ -1,4 +1,4 @@
-﻿namespace Silence.Web.Entities;
+﻿namespace TaskManagement.Infrastructure.Entities;
 public class RefreshTokenResponse
 {
     public string AccessToken { get; set; }

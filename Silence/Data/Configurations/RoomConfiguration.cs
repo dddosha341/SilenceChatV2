@@ -1,4 +1,4 @@
-﻿using Silence.Web.Entities;
+﻿using TaskManagement.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Silence.Web.Data.Configurations
+namespace TaskManagement.Infrastructure.Data.Configurations
 {
     public class RoomConfiguration : IEntityTypeConfiguration<Room>
     {

@@ -34,8 +34,6 @@ namespace TaskManagement.Infrastructure.ViewModels
             _secureStorageService = secureStorageService;
 
             CreateRoomCommand = new RelayCommand(CreateRoomButton);
-
-            
         }
 
         private RoomViewModel _selectedRoom;

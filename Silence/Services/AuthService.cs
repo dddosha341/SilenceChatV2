@@ -4,10 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Silence.Web.Entities;
-using Silence.Web.Data;
+using TaskManagement.Infrastructure.Entities;
+using TaskManagement.Infrastructure.Data;
 
-namespace Silence.Web.Services;
+namespace TaskManagement.Infrastructure.Services;
 
 public class AuthService
 {

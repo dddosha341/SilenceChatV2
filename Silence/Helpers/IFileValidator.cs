@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Silence.Web.Helpers
+namespace TaskManagement.Infrastructure.Helpers
 {
     public interface IFileValidator
     {

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Linq;
 
-namespace Silence.Web.Helpers
+namespace TaskManagement.Infrastructure.Helpers
 {
     public class FileValidator : IFileValidator
     {

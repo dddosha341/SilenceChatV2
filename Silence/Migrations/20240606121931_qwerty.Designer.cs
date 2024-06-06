@@ -12,8 +12,8 @@ using TaskManagement.Infrastructure.Data;
 namespace TaskManagement.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240602180150_Initial")]
-    partial class Initial
+    [Migration("20240606121931_qwerty")]
+    partial class qwerty
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

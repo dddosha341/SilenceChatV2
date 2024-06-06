@@ -2,11 +2,11 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Silence.Web.Entities;
-using Silence.Web.Services;
-using Silence.Web.Data;
+using TaskManagement.Infrastructure.Entities;
+using TaskManagement.Infrastructure.Services;
+using TaskManagement.Infrastructure.Data;
 using System.Linq;
-namespace Silence.Web.Controllers;
+namespace TaskManagement.Infrastructure.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

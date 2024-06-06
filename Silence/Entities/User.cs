@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Silence.Web.Entities
+namespace TaskManagement.Infrastructure.Entities
 {
     public class User 
     {

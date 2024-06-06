@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using TaskManagement.Infrastructure.ViewModels;
 using TaskManagement.Infrastructure.DataContracts;
 using TaskManagement.Infrastructure.ViewModels;
 
@@ -170,6 +171,33 @@ public class ApiClientService
 
         var responseContent = await response.Content
             .ReadFromJsonAsync<IEnumerable<RoomViewModel>>(
+                cancellationToken: cancellationToken);
+
+        if (responseContent == null)
+        {
+            throw new JsonException("Response has unknown format");
+        }
+
+        return responseContent;
+    }
+
+    public async Task<IEnumerable<MessageViewModel>> GetMessagesAsync(
+        string roomName,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClientFactory
+            .CreateClient(AutorizedHttpClient)
+            .GetAsync($"{_serverAddress}/Messages/Room/{roomName}", cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException(
+                $"Get teams request fails: {response.ReasonPhrase}", null,
+                response.StatusCode);
+        }
+
+        var responseContent = await response.Content
+            .ReadFromJsonAsync<IEnumerable<MessageViewModel>>(
                 cancellationToken: cancellationToken);
 
         if (responseContent == null)

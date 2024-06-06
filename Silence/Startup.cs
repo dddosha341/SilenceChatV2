@@ -1,25 +1,25 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Silence.Web.Data;
+using TaskManagement.Infrastructure.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Silence.Web.Hubs;
-using Silence.Web.Entities;
-using Silence.Web.Helpers;
+using TaskManagement.Infrastructure.Hubs;
+using TaskManagement.Infrastructure.Entities;
+using TaskManagement.Infrastructure.Helpers;
 using Microsoft.OpenApi.Models;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Silence.Web.Services;
+using TaskManagement.Infrastructure.Services;
 using System.Collections.Generic;
-using Silence.Web.Controllers;
+using TaskManagement.Infrastructure.Controllers;
 using System;
 
 
-namespace Silence.Web
+namespace TaskManagement.Infrastructure
 {
     public class Startup
     {
@@ -39,11 +39,12 @@ namespace Silence.Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             
-            
 
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<AuthService>();
             services.AddScoped<ConfigurationService>();
+
+            services.AddScoped<MessagesController>();
 
             services.AddSingleton<ConfigurationService>(); // Замените ConfigurationService на ваш собственный сервис конфигурации
 

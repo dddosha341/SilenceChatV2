@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace Silence.Web.ViewModels
+namespace TaskManagement.Infrastructure.ViewModels
 {
     public class UploadViewModel
     {

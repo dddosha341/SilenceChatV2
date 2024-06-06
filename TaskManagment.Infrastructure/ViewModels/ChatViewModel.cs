@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Silence.Web.ViewModels;
+using TaskManagement.Infrastructure.ViewModels;
 using System.Windows.Input;
 using System.Data;
 using TaskManagement.Infrastructure.Utils;
@@ -20,13 +20,9 @@ namespace TaskManagement.Infrastructure.ViewModels
     public class ChatViewModel : BaseViewModel
     {
         public const string ChatIdQueryKey = "chatId";
-
         private readonly HubConnection _hubConnection;
-
         private readonly IAuthenticationService _authenticationService;
-
         private readonly INavigationService _navigationService;
-
         private readonly ApiClientService _apiClientService;
 
         public IEnumerable<MessageViewModel> Messages { get; private set; }
@@ -35,9 +31,9 @@ namespace TaskManagement.Infrastructure.ViewModels
             ApiClientService apiClientService,
             INavigationService navigationService)
         {
-            _hubConnection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:7071/chatHub")
-                .Build();
+            //_hubConnection = new HubConnectionBuilder()
+            //    .WithUrl("http://localhost:7071/chatHub")
+            //    .Build();
             
 
             _authenticationService = authenticationService;
@@ -48,8 +44,9 @@ namespace TaskManagement.Infrastructure.ViewModels
 
             EditRoomCommand = new RelayCommand(EditRoom);
 
-            
             ApplyCommand = new RelayCommand(Apply);
+
+            SendMessageCommand = new RelayCommand(SendMessage);
 
         }
 
@@ -71,7 +68,6 @@ namespace TaskManagement.Infrastructure.ViewModels
             }
         }
 
-
         public bool IsEditing
         {
             get { return _isEditing; }
@@ -83,25 +79,28 @@ namespace TaskManagement.Infrastructure.ViewModels
                 }
             }
         }
+
+        public string NewMessage
+        {
+            get; set; 
+        }
+
         public async Task InitializeAsync(int roomId,
                 CancellationToken cancellationToken = default)
         {
-            _hubConnection.On<MessageViewModel>("newMessage,", FormatMessage);
-            
+            //_hubConnection.On<MessageViewModel>("newMessage,", FormatMessage);
 
+            //await _hubConnection.StartAsync();
 
-
-            await _hubConnection.StartAsync();
-
-            await _hubConnection.SendAsync("Join", this._room.Name);
-
-
-
+            //await _hubConnection.SendAsync("Join", this._room.Name);
 
             var roomResponse = await _apiClientService
                 .GetRoomAsync(roomId, cancellationToken);
 
             Update(roomResponse);
+
+            Messages = await _apiClientService
+                .GetMessagesAsync(this.Room.Name, cancellationToken);
         }
 
 
@@ -113,6 +112,14 @@ namespace TaskManagement.Infrastructure.ViewModels
         // Команда для применения изменений
         public ICommand ApplyCommand { get; private set; }
 
+        // Команда для отправки сообщения
+        public ICommand SendMessageCommand { get; private set; }
+
+        private async void SendMessage()
+        {
+
+        }
+
         private void Update(RoomViewModel roomViewModel)
         {
             Room = roomViewModel;
@@ -122,7 +129,7 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private async void DeleteRoom()
         {
-            await _hubConnection.SendAsync("Leave", _room.Name);
+            //await _hubConnection.SendAsync("Leave", _room.Name);
 
            var response = await _apiClientService.DeleteRoomAsync(Room.Id);
 

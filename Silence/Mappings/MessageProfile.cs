@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Silence.Web.Helpers;
-using Silence.Web.Entities;
-using Silence.Web.ViewModels;
+using TaskManagement.Infrastructure.Helpers;
+using TaskManagement.Infrastructure.Entities;
+using TaskManagement.Infrastructure.ViewModels;
 
-namespace Silence.Web.Mappings
+namespace TaskManagement.Infrastructure.Mappings
 {
     public class MessageProfile : Profile
     {
