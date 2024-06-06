@@ -12,10 +12,10 @@
         <ImplicitUsings>enable</ImplicitUsings>
 
         <!-- Display name -->
-        <ApplicationTitle>TaskManagementApp</ApplicationTitle>
+        <ApplicationTitle>SilenceApp</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.taskmanagementapp</ApplicationId>
+        <ApplicationId>com.companyname.silenceapp</ApplicationId>
         <ApplicationIdGuid>6EA1E366-EAC3-43F7-98AC-AE1FE3629BA4</ApplicationIdGuid>
 
         <!-- Versions -->
@@ -67,7 +67,7 @@
       <Folder Include="ViewModels\" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\TaskManagment.Infrastructure\Silence.Infrastructure.csproj" />
+      <ProjectReference Include="..\Silence.Infrastructure\Silence.Infrastructure.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Pages\ChatPage.xaml.cs">
