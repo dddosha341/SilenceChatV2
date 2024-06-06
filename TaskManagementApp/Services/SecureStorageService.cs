@@ -20,7 +20,6 @@ public class SecureStorageService : ISecureStorageService
     {
         SecureStorage.RemoveAll();
         return Task.CompletedTask;
-
     }
 }
 
