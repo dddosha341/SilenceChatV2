@@ -1,0 +1,35 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TaskManagementApp.Pages.RegisterPage"
+             Title="Registration">
+
+    <VerticalStackLayout Spacing="8" Padding="16, 8">
+
+        <Label 
+            Text="Sign in"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Entry Placeholder="Login"
+               Text="{Binding Login, Mode=OneWayToSource}" />
+
+        <Entry Placeholder="Password"
+               IsPassword="True"
+               Text="{Binding Password, Mode=OneWayToSource}"/>
+
+        <Entry Placeholder="Email"
+                Text="{Binding Email, Mode=OneWayToSource}"/>
+
+        <Entry Placeholder="Full Name"
+                Text="{Binding FullName, Mode=OneWayToSource}"/>
+
+        <Button Text="Sign Up"
+                Margin="0, 8, 0, 0"
+                Command="{Binding RegisterCommand}"/>
+
+        <Label Text="{Binding Error}"
+               TextColor="DarkRed"
+               HorizontalTextAlignment="Center"/>
+
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,47 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:TaskManagement.Infrastructure.ViewModels;assembly=TaskManagement.Infrastructure"
+             x:Class="TaskManagementApp.Pages.LoginPage"
+             x:DataType="viewmodels:LoginViewModel"
+             Title="Sign In">
+
+    <VerticalStackLayout Spacing="24" Padding="16, 64">
+
+        <!-- Поля ввода -->
+        <Entry Placeholder="Login"
+               Text="{Binding Login, Mode=TwoWay}"
+               PlaceholderColor="LightGray"
+               BackgroundColor="#F5F5F5"
+               TextColor="Black"
+               Margin="0, 16, 0, 0" />
+
+        <Entry Placeholder="Password"
+               IsPassword="True"
+               Text="{Binding Password, Mode=TwoWay}"
+               PlaceholderColor="LightGray"
+               BackgroundColor="#F5F5F5"
+               TextColor="Black"
+               Margin="0, 8, 0, 0" />
+
+        <!-- Кнопки -->
+        <Button Text="Sign In"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                Command="{Binding LoginCommand}"
+                CornerRadius="8"
+                Margin="0, 16, 0, 0" />
+
+        <Button Text="Sign Up"
+                BackgroundColor="#4CD964"
+                TextColor="White"
+                Command="{Binding RegisterCommand}"
+                CornerRadius="8" />
+
+        <!-- Сообщение об ошибке -->
+        <Label Text="{Binding Error}"
+               TextColor="DarkRed"
+               HorizontalTextAlignment="Center"
+               Margin="0, 16, 0, 0" />
+
+    </VerticalStackLayout>
+</ContentPage>

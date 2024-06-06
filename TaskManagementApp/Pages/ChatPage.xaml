@@ -1,0 +1,34 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:TaskManagement.Infrastructure.ViewModels;assembly=TaskManagement.Infrastructure"
+             x:Class="TaskManagementApp.Pages.ChatPage"
+             x:DataType="vm:ChatViewModel"
+             Title="{Binding Room.Name}">
+
+    <StackLayout Padding="20">
+        <!-- Ваши элементы интерфейса здесь -->
+        <Label 
+    Text="{Binding Room.Name}"
+    VerticalOptions="Center" 
+    HorizontalOptions="Center" />
+            <!-- Delete Room Button -->
+        <Button Text="Delete Room" 
+                TextColor="Black"
+                BackgroundColor="Red" Command="{Binding DeleteRoomCommand}" Margin="0,0,0,10"/>
+
+        <!-- Edit Room Button -->
+        <Button Text="Edit Room" 
+                TextColor="Black"
+                BackgroundColor="Orange" Command="{Binding EditRoomCommand}" Margin="0,0,0,10"/>
+
+        <!-- Text Input Field -->
+        <Entry Placeholder="Enter text here"                Text="{Binding NewRoomName, Mode=TwoWay}"
+                PlaceholderColor="LightGray"
+                BackgroundColor="#F5F5F5"
+                TextColor="Black"
+                Margin="0,0,0,10" IsVisible="{Binding IsEditing}" />
+
+        <!-- Apply Button -->
+        <Button Text="Apply" BackgroundColor="Green" Command="{Binding ApplyCommand}" IsVisible="{Binding IsEditing}"/>
+    </StackLayout>
+</ContentPage>
