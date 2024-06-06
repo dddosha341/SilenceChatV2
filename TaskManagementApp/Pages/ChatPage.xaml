@@ -80,9 +80,9 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <!-- Поле для отображения отправителя -->
+                                <!-- Поле для отображения сообщения -->
                                 <Label Grid.Row="0" Grid.Column="0" 
-                                       Text="{Binding FromFullName}" 
+                                       Text="{Binding Content}" 
                                        FontSize="18" 
                                        FontAttributes="Bold" 
                                        VerticalOptions="Start"
@@ -96,9 +96,9 @@
                                        HorizontalOptions="End"
                                        TextColor="Gray" />
 
-                                <!-- Поле для отображения сообщения -->
+                                <!-- Поле для отображения отправителя -->
                                 <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                                       Text="{Binding Content}" 
+                                       Text="{Binding FromFullName}" 
                                        FontSize="14" 
                                        VerticalOptions="End" 
                                        Opacity="0.6"

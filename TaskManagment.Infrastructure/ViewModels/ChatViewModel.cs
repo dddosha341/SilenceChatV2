@@ -12,6 +12,7 @@ using TaskManagement.Infrastructure.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.ObjectModel;
 using TaskManagement.Infrastructure.DataContracts;
 using System.Net;
 
@@ -29,15 +30,17 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private readonly ApiClientService _apiClientService;
 
-        public List<MessageViewModel> Messages { get; private set; }
+        public ObservableCollection<MessageViewModel> Messages { get; private set; }
 
-        public ChatViewModel(IAuthenticationService authenticationService, 
+
+
+        public ChatViewModel(IAuthenticationService authenticationService,
             ApiClientService apiClientService,
             INavigationService navigationService,
             ISecureStorageService secureStorageService)
         {
-            
-           
+            Messages = new ObservableCollection<MessageViewModel>();
+
             _authenticationService = authenticationService;
             _apiClientService = apiClientService;
             _navigationService = navigationService;
@@ -63,8 +66,8 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         public string NewRoomName
         {
-            get { return _newRoomName; } 
-            set 
+            get { return _newRoomName; }
+            set
             {
                 if (!value.IsNullOrEmpty())
                     _newRoomName = value;
@@ -100,20 +103,23 @@ namespace TaskManagement.Infrastructure.ViewModels
             var result = await _apiClientService
                 .GetMessagesAsync(this.Room.Name, cancellationToken);
 
-            Messages = result is not null ? result.ToList() : new List<MessageViewModel>();
+            Messages = new ObservableCollection<MessageViewModel>();
+            foreach (var item in result)
+                Messages.Add(item);
+
             OnPropertyChanged(nameof(Messages));
 
             var AccessToken = await _secureStorageService.GetAsync(SecureStorageKey.AccessToken);
 
-              this._hubConnection = new HubConnectionBuilder()
-              .WithUrl("http://localhost:7071/chatHub",
-              options =>
-              {
-                  options.AccessTokenProvider = () => Task.FromResult(AccessToken);
-              })
-              .Build();
+            this._hubConnection = new HubConnectionBuilder()
+            .WithUrl("http://localhost:7071/chatHub",
+            options =>
+            {
+                options.AccessTokenProvider = () => Task.FromResult(AccessToken);
+            })
+            .Build();
 
-            _hubConnection.On<MessageViewModel>("newMessage", FormatMessage) ;
+            _hubConnection.On<MessageViewModel>("newMessage", FormatMessage);
             await _hubConnection.StartAsync(cancellationToken);
             await _hubConnection.SendAsync("Join", this._room.Name, cancellationToken);
         }
@@ -147,7 +153,7 @@ namespace TaskManagement.Infrastructure.ViewModels
 
             if (response is not null)
             {
-                if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created) 
+                if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created)
                 {
                     NewMessage = string.Empty;
                     OnPropertyChanged(nameof(NewMessage));
@@ -166,11 +172,11 @@ namespace TaskManagement.Infrastructure.ViewModels
         {
             //await _hubConnection.SendAsync("Leave", _room.Name);
 
-           var response = await _apiClientService.DeleteRoomAsync(Room.Id);
+            var response = await _apiClientService.DeleteRoomAsync(Room.Id);
 
-            if (response != null) 
+            if (response != null)
             {
-                if(response.StatusCode == HttpStatusCode.OK)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
                     await _navigationService.GoToAsync(Route.Welcome, keepHistory: false);
                 }
@@ -181,6 +187,7 @@ namespace TaskManagement.Infrastructure.ViewModels
         {
             Messages.Add(message);
             OnPropertyChanged(nameof(Messages));
+
         }
 
         private void EditRoom()
@@ -195,7 +202,7 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private async void Apply()
         {
-            if(NewRoomName is not null)
+            if (NewRoomName is not null)
             {
                 var newRoomModel = new RoomViewModel()
                 {
