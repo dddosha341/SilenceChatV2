@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 
 
-namespace TaskManagement.Infrastructure.Services;
+namespace Silence.Web.Services;
 
 
 public class ConfigurationService

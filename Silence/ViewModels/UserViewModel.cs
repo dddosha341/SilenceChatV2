@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Infrastructure.ViewModels
+﻿namespace Silence.Web.ViewModels
 {
     public class UserViewModel
     {

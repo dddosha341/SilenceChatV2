@@ -1,25 +1,25 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using TaskManagement.Infrastructure.Data;
+using Silence.Web.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TaskManagement.Infrastructure.Hubs;
-using TaskManagement.Infrastructure.Entities;
-using TaskManagement.Infrastructure.Helpers;
+using Silence.Web.Hubs;
+using Silence.Web.Entities;
+using Silence.Web.Helpers;
 using Microsoft.OpenApi.Models;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TaskManagement.Infrastructure.Services;
+using Silence.Web.Services;
 using System.Collections.Generic;
-using TaskManagement.Infrastructure.Controllers;
+using Silence.Web.Controllers;
 using System;
 
 
-namespace TaskManagement.Infrastructure
+namespace Silence.Web
 {
     public class Startup
     {
@@ -41,10 +41,10 @@ namespace TaskManagement.Infrastructure
             
 
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<AuthService>();
-            services.AddScoped<ConfigurationService>();
 
-            services.AddScoped<MessagesController>();
+            services.AddScoped<AuthService>();
+
+            services.AddScoped<ConfigurationService>();
 
             services.AddSingleton<ConfigurationService>(); // Замените ConfigurationService на ваш собственный сервис конфигурации
 

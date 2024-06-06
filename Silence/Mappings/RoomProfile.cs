@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using TaskManagement.Infrastructure.Entities;
-using TaskManagement.Infrastructure.ViewModels;
+using Silence.Web.Entities;
+using Silence.Web.ViewModels;
 
-namespace TaskManagement.Infrastructure.Mappings
+namespace Silence.Web.Mappings
 {
     public class RoomProfile : Profile
     {

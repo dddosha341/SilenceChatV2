@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace TaskManagement.Infrastructure.Migrations
+namespace Silence.Web.Migrations
 {
     /// <inheritdoc />
     public partial class qwerty : Migration

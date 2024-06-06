@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TaskManagement.Infrastructure.Migrations
+namespace Silence.Web.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

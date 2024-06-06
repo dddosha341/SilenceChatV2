@@ -3,16 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TaskManagement.Infrastructure.Data;
-using TaskManagement.Infrastructure.Entities;
+using Silence.Web.Data;
+using Silence.Web.Entities;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
-using TaskManagement.Infrastructure.Hubs;
+using Silence.Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
-using TaskManagement.Infrastructure.ViewModels;
+using Silence.Web.ViewModels;
 using System.Security.Claims;
 
-namespace TaskManagement.Infrastructure.Controllers
+namespace Silence.Web.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

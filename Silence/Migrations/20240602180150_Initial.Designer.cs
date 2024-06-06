@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TaskManagement.Infrastructure.Data;
+using Silence.Web.Data;
 
 #nullable disable
 
-namespace TaskManagement.Infrastructure.Migrations
+namespace Silence.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20240602180150_Initial")]

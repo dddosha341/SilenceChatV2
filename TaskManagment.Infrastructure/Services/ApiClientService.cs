@@ -153,7 +153,7 @@ public class ApiClientService
 
     #endregion
 
-    #region Teams
+    #region New
 
     public async Task<IEnumerable<RoomViewModel>> GetRoomsAsync(
         CancellationToken cancellationToken = default)
@@ -208,6 +208,23 @@ public class ApiClientService
         return responseContent;
     }
 
+    public async Task<HttpResponseMessage> SendMessage(MessageViewModel messageViewModel,
+         CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClientFactory
+            .CreateClient(AutorizedHttpClient)
+            .PostAsJsonAsync($"{_serverAddress}/Messages/", cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttpRequestException(
+                $"Get teams request fails: {response.ReasonPhrase}", null,
+                response.StatusCode);
+        }
+
+        return response;
+    }
+
     public async Task<HttpResponseMessage> CreateRoomAsync(string? admin,
         CancellationToken cancellationToken = default
         )
@@ -221,7 +238,7 @@ public class ApiClientService
         var response = await _httpClientFactory
             .CreateClient(AutorizedHttpClient)
             .PostAsJsonAsync($"{_serverAddress}/Rooms",
-                new RoomViewModel() { Id = 0, Name = $"New Room {DateTime.Now.Day} {DateTime.Now.Month} {DateTime.Now.Year} {DateTime.UtcNow}", Admin = admin }, 
+                new RoomViewModel() { Id = 0, Name = $"NewRoom_{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}_{DateTime.UtcNow}".Replace(' ', '_'), Admin = admin }, 
 cancellationToken);
 
         if (!response.IsSuccessStatusCode)

@@ -20,33 +20,41 @@ namespace TaskManagement.Infrastructure.ViewModels
     public class ChatViewModel : BaseViewModel
     {
         public const string ChatIdQueryKey = "chatId";
+
         private readonly HubConnection _hubConnection;
+
         private readonly IAuthenticationService _authenticationService;
+
         private readonly INavigationService _navigationService;
+
         private readonly ApiClientService _apiClientService;
+
+        private readonly ISecureStorageService _secureStorageService;
 
         public IEnumerable<MessageViewModel> Messages { get; private set; }
 
         public ChatViewModel(IAuthenticationService authenticationService, 
             ApiClientService apiClientService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            ISecureStorageService secureStorageService)
         {
             //_hubConnection = new HubConnectionBuilder()
-            //    .WithUrl("http://localhost:7071/chatHub")
-            //    .Build();
+             //   .WithUrl("http://localhost:7071/chatHub")
+              //  .Build();
             
 
             _authenticationService = authenticationService;
             _apiClientService = apiClientService;
             _navigationService = navigationService;
+            _secureStorageService = secureStorageService;
 
             DeleteRoomCommand = new RelayCommand(DeleteRoom);
 
             EditRoomCommand = new RelayCommand(EditRoom);
 
-            ApplyCommand = new RelayCommand(Apply);
-
             SendMessageCommand = new RelayCommand(SendMessage);
+
+            ApplyCommand = new RelayCommand(Apply);
 
         }
 
@@ -68,6 +76,12 @@ namespace TaskManagement.Infrastructure.ViewModels
             }
         }
 
+        public string NewMessage
+        {
+            get; set;
+        }
+
+
         public bool IsEditing
         {
             get { return _isEditing; }
@@ -79,28 +93,30 @@ namespace TaskManagement.Infrastructure.ViewModels
                 }
             }
         }
-
-        public string NewMessage
-        {
-            get; set; 
-        }
-
         public async Task InitializeAsync(int roomId,
                 CancellationToken cancellationToken = default)
         {
-            //_hubConnection.On<MessageViewModel>("newMessage,", FormatMessage);
+            var roomResponse = await _apiClientService
+               .GetRoomAsync(roomId, cancellationToken);
+
+            Update(roomResponse);
+
+
+            //Messages = await _apiClientService
+             //   .GetMessagesAsync(this.Room.Name, cancellationToken);
+
+            _hubConnection.On<MessageViewModel>("newMessage,", FormatMessage);
+
+
 
             //await _hubConnection.StartAsync();
 
             //await _hubConnection.SendAsync("Join", this._room.Name);
 
-            var roomResponse = await _apiClientService
-                .GetRoomAsync(roomId, cancellationToken);
 
-            Update(roomResponse);
 
-            Messages = await _apiClientService
-                .GetMessagesAsync(this.Room.Name, cancellationToken);
+
+            
         }
 
 
@@ -112,12 +128,32 @@ namespace TaskManagement.Infrastructure.ViewModels
         // Команда для применения изменений
         public ICommand ApplyCommand { get; private set; }
 
-        // Команда для отправки сообщения
         public ICommand SendMessageCommand { get; private set; }
 
-        private async void SendMessage()
+        private async Task SendMessage()
         {
+            var admin = await _secureStorageService.GetAsync(SecureStorageKey.Username);
+            MessageViewModel viewModel = new MessageViewModel()
+            {
+                Avatar = "false",
+                Content = NewMessage,
+                FromFullName = admin,
+                Timestamp = DateTime.Now,
+                FromUserName = admin,
+                Room = this.Room.Name,
+                
+            };
 
+            var response = await _apiClientService.SendMessage(viewModel);
+
+            if(response is not null)
+            {
+                if(response .StatusCode == HttpStatusCode.OK) 
+                {
+                    NewMessage = string.Empty;
+                    OnPropertyChanged(nameof(NewMessage));
+                }
+            }
         }
 
         private void Update(RoomViewModel roomViewModel)
@@ -144,7 +180,8 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private async Task FormatMessage(MessageViewModel message)
         {
-
+            Messages.Append(message);
+            OnPropertyChanged(nameof(Messages));
         }
 
         private void EditRoom()

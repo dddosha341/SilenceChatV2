@@ -18,5 +18,6 @@ public enum SecureStorageKey
     RefreshToken,
     UserId,
     Username,
+    FullName,
 }
 

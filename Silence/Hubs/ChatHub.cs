@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using TaskManagement.Infrastructure.Data;
-using TaskManagement.Infrastructure.Entities;
-using TaskManagement.Infrastructure.ViewModels;
+using Silence.Web.Data;
+using Silence.Web.Entities;
+using Silence.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace TaskManagement.Infrastructure.Hubs
+namespace Silence.Web.Hubs
 {
     [Authorize]
     public class ChatHub : Hub

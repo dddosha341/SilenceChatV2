@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TaskManagement.Infrastructure.Helpers
+namespace Silence.Web.Helpers
 {
     public class BasicEmojis
     {
