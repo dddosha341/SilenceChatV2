@@ -1,18 +1,12 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TaskManagementApp.Pages.WelcomePage"
-             xmlns:vm="clr-namespace:TaskManagement.Infrastructure.ViewModels;assembly=TaskManagement.Infrastructure"
-             xmlns:dc="clr-namespace:TaskManagement.Infrastructure.ViewModels;assembly=TaskManagement.Infrastructure"
+             x:Class="SilenceApp.Pages.WelcomePage"
+             xmlns:vm="clr-namespace:Silence.Infrastructure.ViewModels;assembly=Silence.Infrastructure"
+             xmlns:dc="clr-namespace:Silence.Infrastructure.ViewModels;assembly=Silence.Infrastructure"
              Title="Chats"
              x:DataType="vm:WelcomeViewModel">
-    <ContentPage.BackgroundImageSource>
-        <FileImageSource File="background.jpg" />
-    </ContentPage.BackgroundImageSource>
+
     <VerticalStackLayout Padding="20" Spacing="20">
-
-        <!-- Button to create a new room -->
-
-        <!-- CollectionView to display chats -->
         <ScrollView HeightRequest="500">
         <CollectionView ItemsSource="{Binding Rooms}"
                         SelectionMode="Single"

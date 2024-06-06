@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using TaskManagement.Infrastructure.Services;
+using Silence.Infrastructure.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TaskManagement.Infrastructure.ViewModels;
+using Silence.Infrastructure.ViewModels;
 using System.Windows.Input;
 using System.Data;
-using TaskManagement.Infrastructure.Utils;
+using Silence.Infrastructure.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.ObjectModel;
-using TaskManagement.Infrastructure.DataContracts;
+using Silence.Infrastructure.DataContracts;
 using System.Net;
 
-namespace TaskManagement.Infrastructure.ViewModels
+namespace Silence.Infrastructure.ViewModels
 {
     public class ChatViewModel : BaseViewModel
     {
@@ -30,9 +30,9 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private readonly ApiClientService _apiClientService;
 
+        private string _rotation;
+
         public ObservableCollection<MessageViewModel> Messages { get; private set; }
-
-
 
         public ChatViewModel(IAuthenticationService authenticationService,
             ApiClientService apiClientService,
@@ -77,6 +77,16 @@ namespace TaskManagement.Infrastructure.ViewModels
         public string NewMessage
         {
             get; set;
+        }
+
+        public string Rotation
+        {
+            get { return _rotation;  }
+            set
+            {
+                if(value.Equals("Right") || value.Equals("Left"))
+                    _rotation = value;
+            }
         }
 
 
@@ -127,10 +137,8 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         public ICommand DeleteRoomCommand { get; private set; }
 
-        // Команда для редактирования комнаты
         public ICommand EditRoomCommand { get; private set; }
 
-        // Команда для применения изменений
         public ICommand ApplyCommand { get; private set; }
 
         public ICommand SendMessageCommand { get; private set; }
@@ -170,8 +178,6 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private async void DeleteRoom()
         {
-            //await _hubConnection.SendAsync("Leave", _room.Name);
-
             var response = await _apiClientService.DeleteRoomAsync(Room.Id);
 
             if (response != null)
@@ -185,11 +191,19 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private void FormatMessage(MessageViewModel message)
         {
+            var user = _secureStorageService.GetAsync(SecureStorageKey.Username);
+
+            if (message.FromUserName.Equals(user))
+                Rotation = "Right";
+            else
+                Rotation = "Left";
+
+
             Messages.Add(message);
             OnPropertyChanged(nameof(Messages));
 
         }
-
+        
         private void EditRoom()
         {
             if (!IsEditing)
@@ -221,9 +235,7 @@ namespace TaskManagement.Infrastructure.ViewModels
             }
 
 
-            // Обработка нажатия кнопки Apply
-            // Выполнение команды
-            IsEditing = false; // Сброс свойства IsEditing в false после нажатия кнопки Apply
+            IsEditing = false; 
             OnPropertyChanged(nameof(IsEditing));
         }
 

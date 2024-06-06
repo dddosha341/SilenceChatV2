@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="TaskManagementApp.AppShell"
+    x:Class="SilenceApp.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:pages="clr-namespace:TaskManagementApp.Pages"
-    xmlns:vm="clr-namespace:TaskManagementApp.ViewModels"
+    xmlns:pages="clr-namespace:SilenceApp.Pages"
+    xmlns:vm="clr-namespace:SilenceApp.ViewModels"
     x:DataType="vm:AppShellViewModel"
     Shell.FlyoutBehavior="Disabled">
 

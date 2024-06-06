@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace TaskManagementApp;
+namespace SilenceApp;
 
 [Application]
 public class MainApplication : MauiApplication

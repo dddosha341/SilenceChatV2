@@ -1,9 +1,9 @@
-﻿using TaskManagementApp.Pages;
-using TaskManagementApp.Services;
-using TaskManagement.Infrastructure.Services;
-using TaskManagementApp.ViewModels;
+﻿using SilenceApp.Pages;
+using SilenceApp.Services;
+using Silence.Infrastructure.Services;
+using SilenceApp.ViewModels;
 
-namespace TaskManagementApp;
+namespace SilenceApp;
 
 public partial class AppShell : Shell
 {

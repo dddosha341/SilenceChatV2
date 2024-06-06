@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace TaskManagement.Server.Services;
+namespace Silence.Server.Services;
 
 
 

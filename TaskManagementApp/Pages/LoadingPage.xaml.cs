@@ -1,4 +1,4 @@
-﻿namespace TaskManagementApp.Pages;
+﻿namespace SilenceApp.Pages;
 
 public partial class LoadingPage : ContentPage
 {

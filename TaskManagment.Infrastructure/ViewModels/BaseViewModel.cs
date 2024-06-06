@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TaskManagement.Infrastructure.ViewModels;
+namespace Silence.Infrastructure.ViewModels;
 
 public class BaseViewModel : INotifyPropertyChanged
 {

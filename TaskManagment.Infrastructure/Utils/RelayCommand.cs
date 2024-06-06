@@ -1,6 +1,6 @@
 using System.Windows.Input;
 
-namespace TaskManagement.Infrastructure.Utils;
+namespace Silence.Infrastructure.Utils;
 
 public class RelayCommand : ICommand
 {

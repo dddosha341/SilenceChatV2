@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace TaskManagement.Infrastructure.ViewModels
+namespace Silence.Infrastructure.ViewModels
 {
     public class MessageViewModel
     {

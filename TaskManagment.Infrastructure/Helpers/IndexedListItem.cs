@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Infrastructure.Helpers;
+﻿namespace Silence.Infrastructure.Helpers;
 
 public class IndexedListItem
 {

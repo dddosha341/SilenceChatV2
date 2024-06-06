@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using Silence.Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
-using Silence.Web.ViewModels;
+using Silence.Infrastructure.ViewModels;
 using System.Security.Claims;
 
 namespace Silence.Web.Controllers

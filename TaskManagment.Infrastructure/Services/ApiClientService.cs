@@ -3,11 +3,11 @@ using System.Text.Json;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using TaskManagement.Infrastructure.ViewModels;
-using TaskManagement.Infrastructure.DataContracts;
-using TaskManagement.Infrastructure.ViewModels;
+using Silence.Infrastructure.ViewModels;
+using Silence.Infrastructure.DataContracts;
+using Silence.Infrastructure.ViewModels;
 
-namespace TaskManagement.Infrastructure.Services;
+namespace Silence.Infrastructure.Services;
 
 public class ApiClientService
 {
@@ -239,7 +239,7 @@ public class ApiClientService
             .CreateClient(AutorizedHttpClient)
             .PostAsJsonAsync($"{_serverAddress}/Rooms",
                 new RoomViewModel() { Id = 0, Name = $"NewRoom_{DateTime.Now.Day}_{DateTime.Now.Month}_{DateTime.Now.Year}_{DateTime.UtcNow}".Replace(' ', '_'), Admin = admin }, 
-cancellationToken);
+                    cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {
@@ -302,50 +302,6 @@ cancellationToken);
         return response;
     }
 
-
-
-
-
-
-
-    /* public async Task<RoomViewModel> AddUserToTeamAsync(int teamId,
-         int userId, CancellationToken cancellationToken = default)
-     {
-         var response = await _httpClientFactory
-             .CreateClient(AutorizedHttpClient)
-             .PostAsync($"{_serverAddress}/teams/{teamId}/users/{userId}",
-                 null, cancellationToken);
-
-         if (!response.IsSuccessStatusCode)
-         {
-             throw new HttpRequestException(
-                 $"Add user to team request fails: {response.ReasonPhrase}",
-                 null, response.StatusCode);
-         }
-
-         return await ParseGetRoomResponseAsync(response, cancellationToken);
-     }*/
-
-
-
-    /* public async Task<RoomViewModel> RemoveUserFromTeamAsync(int teamId,
-         int userId, CancellationToken cancellationToken = default)
-     {
-         var response = await _httpClientFactory
-             .CreateClient(AutorizedHttpClient)
-             .DeleteAsync($"{_serverAddress}/teams/{teamId}/users/{userId}",
-                 cancellationToken);
-
-         if (!response.IsSuccessStatusCode)
-         {
-             throw new HttpRequestException(
-                 $"Remove user from team request fails: {response.ReasonPhrase}",
-                 null, response.StatusCode);
-         }
-
-         return await ParseGetRoomResponseAsync(response, cancellationToken);
-     }
- */
     private async Task<RoomViewModel> ParseGetRoomResponseAsync(
         HttpResponseMessage? response,
         CancellationToken cancellationToken = default)

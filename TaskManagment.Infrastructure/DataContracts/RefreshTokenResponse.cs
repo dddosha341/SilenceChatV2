@@ -1,4 +1,4 @@
-﻿namespace TaskManagement.Infrastructure.DataContracts;
+﻿namespace Silence.Infrastructure.DataContracts;
 
 public class RefreshTokenResponse
 {

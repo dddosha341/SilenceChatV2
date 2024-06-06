@@ -64,7 +64,7 @@ public class AuthService
             ValidIssuer = _configurationService.JwtIssuer,
             ValidateAudience = true,
             ValidAudience = _configurationService.JwtAudience,
-            ValidateLifetime = false, // We want to check even an expired token
+            ValidateLifetime = false, 
             ClockSkew = TimeSpan.Zero
         };
 

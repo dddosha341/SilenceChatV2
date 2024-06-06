@@ -1,5 +1,5 @@
 ﻿
-namespace TaskManagement.Infrastructure.Services;
+namespace Silence.Infrastructure.Services;
 
 public interface INavigationService
 {

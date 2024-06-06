@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace TaskManagementApp;
+namespace SilenceApp;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

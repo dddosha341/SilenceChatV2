@@ -1,10 +1,11 @@
 ﻿using Microsoft.Maui.Controls;
-using TaskManagement.Infrastructure.ViewModels;
+using Silence.Infrastructure.ViewModels;
 
-namespace TaskManagementApp.Pages;
+namespace SilenceApp.Pages;
 
 public partial class WelcomePage : ContentPage
 {
+
     private readonly WelcomeViewModel _viewModel;
 
     public WelcomePage()

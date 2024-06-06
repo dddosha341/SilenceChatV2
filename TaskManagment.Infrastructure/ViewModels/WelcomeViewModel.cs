@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Windows.Input;
-using TaskManagement.Infrastructure.Utils;
-using TaskManagement.Infrastructure.DataContracts;
-using TaskManagement.Infrastructure.Services;
+using Silence.Infrastructure.Utils;
+using Silence.Infrastructure.DataContracts;
+using Silence.Infrastructure.Services;
 using System.Threading;
 
-namespace TaskManagement.Infrastructure.ViewModels
+namespace Silence.Infrastructure.ViewModels
 {
     public class WelcomeViewModel : BaseViewModel
     {

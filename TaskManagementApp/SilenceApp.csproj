@@ -67,7 +67,7 @@
       <Folder Include="ViewModels\" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\TaskManagment.Infrastructure\TaskManagement.Infrastructure.csproj" />
+      <ProjectReference Include="..\TaskManagment.Infrastructure\Silence.Infrastructure.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Compile Update="Pages\ChatPage.xaml.cs">

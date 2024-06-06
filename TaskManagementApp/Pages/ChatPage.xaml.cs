@@ -1,19 +1,20 @@
-﻿using TaskManagement.Infrastructure.ViewModels;
+﻿using Silence.Infrastructure.ViewModels;
 
-namespace TaskManagementApp.Pages;
+namespace SilenceApp.Pages;
 
 [QueryProperty(nameof(RoomId), ChatViewModel.ChatIdQueryKey)]
 public partial class ChatPage : ContentPage
 {
 
     private readonly ChatViewModel _viewModel;
+
+    public int RoomId { get; set; }
+
     public ChatPage()
     {
         InitializeComponent();
         BindingContext = _viewModel = MauiProgram.Services.GetService<ChatViewModel>();
     }
-
-    public int RoomId { get; set; }
 
     protected override async void OnAppearing()
     {

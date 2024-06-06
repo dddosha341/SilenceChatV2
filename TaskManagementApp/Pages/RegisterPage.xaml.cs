@@ -1,6 +1,6 @@
-﻿using TaskManagement.Infrastructure.ViewModels;
+﻿using Silence.Infrastructure.ViewModels;
 
-namespace TaskManagementApp.Pages;
+namespace SilenceApp.Pages;
 
 public partial class RegisterPage : ContentPage
 {

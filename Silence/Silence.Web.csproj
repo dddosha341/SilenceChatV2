@@ -41,4 +41,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManagment.Infrastructure\Silence.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

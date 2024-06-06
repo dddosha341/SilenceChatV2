@@ -10,9 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using Microsoft.AspNetCore.SignalR;
 using Silence.Web.Hubs;
-using Silence.Web.ViewModels;
+using Silence.Infrastructure.ViewModels;
 using System.Text.RegularExpressions;
-using Microsoft.Build.Construction;
 
 namespace Silence.Web.Controllers
 {
@@ -22,7 +21,6 @@ namespace Silence.Web.Controllers
     public class MessagesController : ControllerBase
     {
         private readonly AppDbContext _context;
-       // private readonly AuthController _authController;
         private readonly IMapper _mapper;
         private readonly IHubContext<ChatHub> _hubContext;
 

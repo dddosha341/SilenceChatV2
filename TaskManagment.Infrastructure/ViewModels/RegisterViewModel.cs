@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
-using TaskManagement.Infrastructure.Utils;
-using TaskManagement.Infrastructure.Services;
+using Silence.Infrastructure.Utils;
+using Silence.Infrastructure.Services;
 
-namespace TaskManagement.Infrastructure.ViewModels;
+namespace Silence.Infrastructure.ViewModels;
 
 public class RegisterViewModel : BaseViewModel
 {

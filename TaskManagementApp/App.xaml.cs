@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using Microsoft.Extensions.Logging;
-using TaskManagement.Infrastructure.Services;
+using Silence.Infrastructure.Services;
 
-namespace TaskManagementApp;
+namespace SilenceApp;
 
 public partial class App : Application
 {

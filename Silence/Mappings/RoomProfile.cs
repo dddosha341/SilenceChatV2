@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Silence.Web.Entities;
-using Silence.Web.ViewModels;
+using Silence.Infrastructure.ViewModels;
 
 namespace Silence.Web.Mappings
 {

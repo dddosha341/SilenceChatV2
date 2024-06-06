@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using TaskManagement.Infrastructure.ViewModels;
-using TaskManagementApp.Services;
-using TaskManagement.Infrastructure.Services;
+using Silence.Infrastructure.ViewModels;
+using SilenceApp.Services;
+using Silence.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
-using TaskManagementApp.ViewModels;
+using SilenceApp.ViewModels;
 
-namespace TaskManagementApp;
+namespace SilenceApp;
 
 public static class MauiProgram
 {
@@ -40,7 +40,7 @@ public static class MauiProgram
         builder.Services
             .AddSingleton<INavigationService, NavigationService>()
             .AddSingleton<ISecureStorageService, SecureStorageService>()
-            .AddSingleton<IAuthenticationService, TaskManagement.Infrastructure.Services.AuthenticationService>()
+            .AddSingleton<IAuthenticationService, Silence.Infrastructure.Services.AuthenticationService>()
             .AddSingleton<RefreshTokenHandler>()
             .AddSingleton<ApiClientService>(provider =>
             {

@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace TaskManagementApp;
+namespace SilenceApp;
 
 public class Program
 {

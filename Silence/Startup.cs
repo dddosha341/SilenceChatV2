@@ -6,8 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Silence.Web.Hubs;
-using Silence.Web.Entities;
-using Silence.Web.Helpers;
 using Microsoft.OpenApi.Models;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,7 +13,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Silence.Web.Services;
 using System.Collections.Generic;
-using Silence.Web.Controllers;
 using System;
 
 
@@ -30,7 +27,6 @@ namespace Silence.Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options =>
@@ -46,7 +42,7 @@ namespace Silence.Web
 
             services.AddScoped<ConfigurationService>();
 
-            services.AddSingleton<ConfigurationService>(); // Замените ConfigurationService на ваш собственный сервис конфигурации
+            services.AddSingleton<ConfigurationService>(); 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -65,7 +61,6 @@ namespace Silence.Web
         };
     });
 
-            services.AddTransient<IFileValidator, FileValidator>();
             services.AddRazorPages();
             services.AddControllers();
             services.AddSignalR();
@@ -102,15 +97,12 @@ namespace Silence.Web
         });
             });
 
-
-            // Add Swagger services
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("alpha 0.1", new OpenApiInfo { Title = "Silence", Version = "alpha 0.1" });
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -121,7 +113,6 @@ namespace Silence.Web
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -133,15 +124,12 @@ namespace Silence.Web
             app.UseAuthentication();
             app.UseAuthorization();
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/alpha 0.1/swagger.json", "Silence");
-                c.RoutePrefix = string.Empty; // Set Swagger UI at the app's root
+                c.RoutePrefix = string.Empty; 
             });
 
             app.UseEndpoints(endpoints =>

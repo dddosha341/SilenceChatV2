@@ -1,6 +1,6 @@
-﻿using TaskManagement.Infrastructure.Services;
+﻿using Silence.Infrastructure.Services;
 
-namespace TaskManagementApp.Services;
+namespace SilenceApp.Services;
 
 public class NavigationService : INavigationService
 {

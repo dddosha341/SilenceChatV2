@@ -1,16 +1,14 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:vm="clr-namespace:TaskManagement.Infrastructure.ViewModels;assembly=TaskManagement.Infrastructure"
-             xmlns:dc="clr-namespace:TaskManagement.Infrastructure.ViewModels;assembly=TaskManagement.Infrastructure"
-             x:Class="TaskManagementApp.Pages.ChatPage"
+             xmlns:vm="clr-namespace:Silence.Infrastructure.ViewModels;assembly=Silence.Infrastructure"
+             xmlns:dc="clr-namespace:Silence.Infrastructure.ViewModels;assembly=Silence.Infrastructure"
+             x:Class="SilenceApp.Pages.ChatPage"
              x:DataType="vm:ChatViewModel"
              Title="{Binding Room.Name}">
 
     <Grid RowDefinitions="Auto,*,Auto" Padding="20">
-        <!-- Верхняя часть страницы -->
         <StackLayout Grid.Row="0">
             <Grid ColumnDefinitions="*,Auto,Auto" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                <!-- Кнопка удаления комнаты -->
                 <Button Text="Del" 
                         TextColor="Black"
                         BackgroundColor="Red" 
@@ -22,7 +20,6 @@
                         Grid.Column="1"
                         HorizontalOptions="End"/>
 
-                <!-- Кнопка редактирования комнаты -->
                 <Button Text="Edit" 
                         TextColor="Black"
                         BackgroundColor="Orange" 
@@ -35,7 +32,6 @@
                         HorizontalOptions="End"/>
             </Grid>
 
-            <!-- Поле ввода текста и кнопка применения на одной строке -->
             <Grid ColumnDefinitions="*,Auto" HeightRequest="50">
                 <Entry Placeholder="Enter text here"                
                        Text="{Binding NewRoomName, Mode=TwoWay}"
@@ -61,7 +57,6 @@
             </Grid>
         </StackLayout>
 
-        <!-- Средняя часть страницы -->
         <ScrollView Grid.Row="1" VerticalOptions="FillAndExpand">
             <CollectionView ItemsSource="{Binding Messages}"
                             VerticalOptions="FillAndExpand">
@@ -80,7 +75,6 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <!-- Поле для отображения сообщения -->
                                 <Label Grid.Row="0" Grid.Column="0" 
                                        Text="{Binding Content}" 
                                        FontSize="18" 
@@ -88,7 +82,6 @@
                                        VerticalOptions="Start"
                                        TextColor="DarkBlue" />
 
-                                <!-- Поле для отображения времени -->
                                 <Label Grid.Row="0" Grid.Column="2" 
                                        Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" 
                                        FontSize="14" 
@@ -96,7 +89,6 @@
                                        HorizontalOptions="End"
                                        TextColor="Gray" />
 
-                                <!-- Поле для отображения отправителя -->
                                 <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
                                        Text="{Binding FromFullName}" 
                                        FontSize="14" 
@@ -110,9 +102,7 @@
             </CollectionView>
         </ScrollView>
 
-        <!-- Нижняя часть страницы для ввода сообщения -->
         <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,10,0,0" HeightRequest="50">
-            <!-- Поле ввода сообщения -->
             <Entry Placeholder="Enter your message"
                    Text="{Binding NewMessage, Mode=TwoWay}"
                    PlaceholderColor="LightGray"
@@ -123,7 +113,6 @@
                    VerticalOptions="Center"
                    HorizontalOptions="FillAndExpand"/>
 
-            <!-- Кнопка отправки -->
             <Button Text="Send" 
                     BackgroundColor="Blue"
                     TextColor="White"

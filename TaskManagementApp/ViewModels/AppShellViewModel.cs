@@ -1,9 +1,9 @@
 ﻿using System.Windows.Input;
-using TaskManagement.Infrastructure.Services;
-using TaskManagement.Infrastructure.Utils;
-using TaskManagement.Infrastructure.ViewModels;
+using Silence.Infrastructure.Services;
+using Silence.Infrastructure.Utils;
+using Silence.Infrastructure.ViewModels;
 
-namespace TaskManagementApp.ViewModels;
+namespace SilenceApp.ViewModels;
 
 public class AppShellViewModel : BaseViewModel
 {

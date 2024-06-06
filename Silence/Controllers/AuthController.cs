@@ -27,11 +27,9 @@ public class AuthController : ControllerBase
         _context = context;
     }
 
-    // POST api/auth/login
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest request)
     {
-        // Проверяем учетные данные пользователя
         var user = _context.Users.SingleOrDefault(u => u.UserName == request.UserName);
         if (user == null ||
             !_authService.VerifyPasswordHash(
@@ -40,17 +38,14 @@ public class AuthController : ControllerBase
             return Unauthorized("Invalid username or password.");
         }
 
-        // Генерируем access и refresh токены
         var accessToken = _authService.GenerateAccessToken(user);
         var refreshToken = _authService.GenerateRefreshToken();
 
-        // Сохраняем refresh токен в базе данных
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(
             _configurationService.JwtRefreshTokenExpirationDays);
         _context.SaveChanges();
 
-        // Возвращаем токены клиенту
         return Ok(new LoginResponse
         {
             AccessToken = accessToken,
@@ -60,30 +55,24 @@ public class AuthController : ControllerBase
         });
     }
 
-    // POST api/auth/refresh
     [HttpPost("refresh-token")]
     public IActionResult Refresh([FromBody] RefreshTokenRequest request)
     {
         var principal = _authService.GetPrincipalFromExpiredToken(request.AccessToken);
-        var username = principal.Identity.Name; // Извлекаем имя пользователя из принципала
+        var username = principal.Identity.Name; 
         var user = _context.Users.SingleOrDefault(u => u.UserName == username);
 
-        // Проверяем валидность refresh токена
         if (user == null || user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
         {
             return BadRequest("Invalid token.");
         }
 
-        // Генерируем новые токены
         var newAccessToken = _authService.GenerateAccessToken(user);
         var newRefreshToken = _authService.GenerateRefreshToken();
 
-        // Обновляем refresh токен в базе данных
         user.RefreshToken = newRefreshToken;
-        // TODO: save new life time
         _context.SaveChanges();
 
-        // Возвращаем новые токены клиенту
         return Ok(new RefreshTokenResponse
         {
             AccessToken = newAccessToken,
@@ -94,7 +83,6 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register([FromBody] RegisterRequest request)
     {
-        // Проверяем, существует ли уже пользователь с таким именем
         var existingUser = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
         if (existingUser != null)
         {
@@ -103,8 +91,6 @@ public class AuthController : ControllerBase
         _authService.CreatePasswordHash(request.Password,
        out string passwordHash, out string passwordSalt);
 
-
-        // Создаем нового пользователя
         var user = new User
         {
             UserName = request.Username,
@@ -116,13 +102,11 @@ public class AuthController : ControllerBase
 
         try
         {
-            // Сохраняем пользователя в базе данных
             _context.Users.Add(user);
             _context.SaveChanges();
         }
         catch (Exception ex)
         {
-            // Обработка ошибки сохранения пользователя
             return BadRequest("Error registering user.");
         }
 

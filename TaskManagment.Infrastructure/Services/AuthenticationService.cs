@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace TaskManagement.Infrastructure.Services;
+namespace Silence.Infrastructure.Services;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -11,6 +11,8 @@ public class AuthenticationService : IAuthenticationService
     private readonly ApiClientService _apiClientService;
 
     private bool _isAuthenticated;
+
+    public int? UserId { get; private set; }
 
     public AuthenticationService(ILogger<AuthenticationService> logger,
         ISecureStorageService secureStorageService,
@@ -34,7 +36,7 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public int? UserId { get; private set; }
+    
 
     public async Task<bool> AuthenticateAsync(string login, string password,
         CancellationToken cancellationToken = default)

@@ -1,8 +1,8 @@
 ﻿<maui:MauiWinUIApplication
-    x:Class="TaskManagementApp.WinUI.App"
+    x:Class="SilenceApp.WinUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:maui="using:Microsoft.Maui"
-    xmlns:local="using:TaskManagementApp.WinUI">
+    xmlns:local="using:SilenceApp.WinUI">
 
 </maui:MauiWinUIApplication>
