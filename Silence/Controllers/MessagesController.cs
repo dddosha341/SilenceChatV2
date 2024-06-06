@@ -35,7 +35,6 @@ namespace Silence.Web.Controllers
             _mapper = mapper;
             _hubContext = hubContext;
             //_authController = authController;
-
         }
 
         [HttpGet("{id}")]
