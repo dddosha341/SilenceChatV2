@@ -22,19 +22,19 @@ namespace Silence.Web.Controllers
     public class MessagesController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly AuthController _authController;
+       // private readonly AuthController _authController;
         private readonly IMapper _mapper;
         private readonly IHubContext<ChatHub> _hubContext;
 
         public MessagesController(AppDbContext context,
             IMapper mapper,
-            IHubContext<ChatHub> hubContext,
-            AuthController authController)
+            IHubContext<ChatHub> hubContext
+            )
         {
             _context = context;
             _mapper = mapper;
             _hubContext = hubContext;
-            _authController = authController;
+            //_authController = authController;
 
         }
 

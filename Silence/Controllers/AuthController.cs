@@ -19,7 +19,8 @@ public class AuthController : ControllerBase
     public AuthController(
         AuthService authService,
         ConfigurationService configurationService,
-        AppDbContext context)
+        AppDbContext context
+        )
     {
         _authService = authService;
         _configurationService = configurationService;
