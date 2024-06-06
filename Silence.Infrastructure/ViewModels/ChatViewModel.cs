@@ -30,7 +30,7 @@ namespace Silence.Infrastructure.ViewModels
 
         private readonly ApiClientService _apiClientService;
 
-        private string _rotation;
+        private string _rotation = "Start";
 
         public ObservableCollection<MessageViewModel> Messages { get; private set; }
 
@@ -84,7 +84,7 @@ namespace Silence.Infrastructure.ViewModels
             get { return _rotation;  }
             set
             {
-                if(value.Equals("Right") || value.Equals("Left"))
+                if(value.Equals("End") || value.Equals("Start"))
                     _rotation = value;
             }
         }
@@ -194,9 +194,9 @@ namespace Silence.Infrastructure.ViewModels
             var user = _secureStorageService.GetAsync(SecureStorageKey.Username);
 
             if (message.FromUserName.Equals(user))
-                Rotation = "Right";
+                Rotation = "End";
             else
-                Rotation = "Left";
+                Rotation = "Start";
 
 
             Messages.Add(message);

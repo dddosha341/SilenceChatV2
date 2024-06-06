@@ -75,30 +75,27 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
-                                <!-- Поле для отображения сообщения -->
                                 <Label Grid.Row="0" Grid.Column="0" 
-                           Text="{Binding Content}" 
-                           FontSize="18" 
-                           FontAttributes="Bold" 
-                           VerticalOptions="Start"
-                           TextColor="DarkBlue" />
+                                    Text="{Binding Content}" 
+                                    FontSize="18" 
+                                    FontAttributes="Bold" 
+                                    VerticalOptions="Start"
+                                    TextColor="DarkBlue" />
 
-                                <!-- Поле для отображения времени -->
                                 <Label Grid.Row="0" Grid.Column="2" 
-                           Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" 
-                           FontSize="14" 
-                           VerticalOptions="Start"
-                           HorizontalOptions="End"
-                           TextColor="Gray" />
+                                    Text="{Binding Timestamp, StringFormat='{0:HH:mm}'}" 
+                                    FontSize="14" 
+                                    VerticalOptions="Start"
+                                    HorizontalOptions="End"
+                                    TextColor="Gray" />
 
-                                <!-- Поле для отображения отправителя -->
                                 <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-                           Text="{Binding FromFullName}" 
-                           FontSize="14" 
-                           VerticalOptions="End" 
-                           HorizontalOptions="StartAndExpand"
-                           Opacity="0.6"
-                           TextColor="DarkBlue" />
+                                    Text="{Binding FromFullName}" 
+                                    FontSize="14" 
+                                    VerticalOptions="End" 
+                                    HorizontalOptions="StartAndExpand"
+                                    Opacity="0.6"
+                                    TextColor="DarkBlue" />
                             </Grid>
                         </Frame>
                     </DataTemplate>
