@@ -21,7 +21,7 @@ namespace TaskManagement.Infrastructure.ViewModels
     {
         public const string ChatIdQueryKey = "chatId";
 
-        private readonly HubConnection _hubConnection;
+        private HubConnection _hubConnection;
 
         private readonly IAuthenticationService _authenticationService;
 
@@ -31,18 +31,15 @@ namespace TaskManagement.Infrastructure.ViewModels
 
         private readonly ISecureStorageService _secureStorageService;
 
-        public IEnumerable<MessageViewModel> Messages { get; private set; }
+        public List<MessageViewModel> Messages { get; private set; }
 
         public ChatViewModel(IAuthenticationService authenticationService, 
             ApiClientService apiClientService,
             INavigationService navigationService,
             ISecureStorageService secureStorageService)
         {
-            //_hubConnection = new HubConnectionBuilder()
-             //   .WithUrl("http://localhost:7071/chatHub")
-              //  .Build();
             
-
+           
             _authenticationService = authenticationService;
             _apiClientService = apiClientService;
             _navigationService = navigationService;
@@ -102,20 +99,30 @@ namespace TaskManagement.Infrastructure.ViewModels
             Update(roomResponse);
 
 
-            Messages = await _apiClientService
+            var result = await _apiClientService
                 .GetMessagesAsync(this.Room.Name, cancellationToken);
+
+            Messages = result is not null ? result.ToList() : new List<MessageViewModel>();
             OnPropertyChanged(nameof(Messages));
 
-            _hubConnection.On<MessageViewModel>("newMessage,", FormatMessage);
+            var AccessToken = await _secureStorageService.GetAsync(SecureStorageKey.AccessToken);
+
+              this._hubConnection = new HubConnectionBuilder()
+              .WithUrl("http://localhost:7071/chatHub",
+              options =>
+              {
+                  options.AccessTokenProvider = () => Task.FromResult(AccessToken);
+              })
+              .Build();
 
 
 
-            //await _hubConnection.StartAsync();
 
-            //await _hubConnection.SendAsync("Join", this._room.Name);
+            _hubConnection.On<MessageViewModel>("newMessage", FormatMessage) ;
 
+            await _hubConnection.StartAsync(cancellationToken);
 
-
+            await _hubConnection.SendAsync("Join", this._room.Name, cancellationToken);
 
             
         }
@@ -142,14 +149,14 @@ namespace TaskManagement.Infrastructure.ViewModels
                 Timestamp = DateTime.Now,
                 FromUserName = admin,
                 Room = this.Room.Name,
-                
+
             };
 
             var response = await _apiClientService.SendMessage(viewModel);
 
-            if(response is not null)
+            if (response is not null)
             {
-                if(response .StatusCode == HttpStatusCode.OK) 
+                if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created) 
                 {
                     NewMessage = string.Empty;
                     OnPropertyChanged(nameof(NewMessage));
@@ -179,10 +186,12 @@ namespace TaskManagement.Infrastructure.ViewModels
             }
         }
 
-        private async Task FormatMessage(MessageViewModel message)
+        private void FormatMessage(MessageViewModel message)
         {
-            Messages.Append(message);
+            Messages.Add(message);
             OnPropertyChanged(nameof(Messages));
+
+            var two = 2 + 2;
         }
 
         private void EditRoom()
