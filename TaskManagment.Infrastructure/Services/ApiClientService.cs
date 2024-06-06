@@ -213,7 +213,7 @@ public class ApiClientService
     {
         var response = await _httpClientFactory
             .CreateClient(AutorizedHttpClient)
-            .PostAsJsonAsync($"{_serverAddress}/Messages/", cancellationToken);
+            .PostAsJsonAsync($"{_serverAddress}/Messages", messageViewModel, cancellationToken);
 
         if (!response.IsSuccessStatusCode)
         {

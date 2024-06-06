@@ -38,9 +38,9 @@ namespace TaskManagement.Infrastructure.ViewModels
             INavigationService navigationService,
             ISecureStorageService secureStorageService)
         {
-            //_hubConnection = new HubConnectionBuilder()
-             //   .WithUrl("http://localhost:7071/chatHub")
-              //  .Build();
+            _hubConnection = new HubConnectionBuilder()
+               .WithUrl("/chatHub")
+               .Build();
             
 
             _authenticationService = authenticationService;
@@ -106,13 +106,13 @@ namespace TaskManagement.Infrastructure.ViewModels
                 .GetMessagesAsync(this.Room.Name, cancellationToken);
             OnPropertyChanged(nameof(Messages));
 
-            _hubConnection.On<MessageViewModel>("newMessage,", FormatMessage);
+            _hubConnection.On<MessageViewModel>("newMessage", FormatMessage);
 
 
 
-            //await _hubConnection.StartAsync();
+            await _hubConnection.StartAsync(cancellationToken);
 
-            //await _hubConnection.SendAsync("Join", this._room.Name);
+            await _hubConnection.SendAsync("Join", this._room.Name, cancellationToken);
 
 
 
@@ -142,14 +142,14 @@ namespace TaskManagement.Infrastructure.ViewModels
                 Timestamp = DateTime.Now,
                 FromUserName = admin,
                 Room = this.Room.Name,
-                
+
             };
 
             var response = await _apiClientService.SendMessage(viewModel);
 
-            if(response is not null)
+            if (response is not null)
             {
-                if(response .StatusCode == HttpStatusCode.OK) 
+                if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created) 
                 {
                     NewMessage = string.Empty;
                     OnPropertyChanged(nameof(NewMessage));
@@ -179,7 +179,7 @@ namespace TaskManagement.Infrastructure.ViewModels
             }
         }
 
-        private async Task FormatMessage(MessageViewModel message)
+        private void FormatMessage(MessageViewModel message)
         {
             Messages.Append(message);
             OnPropertyChanged(nameof(Messages));
