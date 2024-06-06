@@ -102,8 +102,9 @@ namespace TaskManagement.Infrastructure.ViewModels
             Update(roomResponse);
 
 
-            //Messages = await _apiClientService
-             //   .GetMessagesAsync(this.Room.Name, cancellationToken);
+            Messages = await _apiClientService
+                .GetMessagesAsync(this.Room.Name, cancellationToken);
+            OnPropertyChanged(nameof(Messages));
 
             _hubConnection.On<MessageViewModel>("newMessage,", FormatMessage);
 
