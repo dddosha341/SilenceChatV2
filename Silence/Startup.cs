@@ -129,7 +129,7 @@ namespace Silence.Web
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/alpha 0.1/swagger.json", "Silence");
-                c.RoutePrefix = string.Empty; 
+                c.RoutePrefix = "swagger";//string.Empty; 
             });
 
             app.UseEndpoints(endpoints =>

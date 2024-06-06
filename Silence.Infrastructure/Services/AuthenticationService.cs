@@ -36,8 +36,6 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    
-
     public async Task<bool> AuthenticateAsync(string login, string password,
         CancellationToken cancellationToken = default)
     {
