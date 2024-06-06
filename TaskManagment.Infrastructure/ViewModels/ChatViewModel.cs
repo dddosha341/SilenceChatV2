@@ -24,12 +24,10 @@ namespace TaskManagement.Infrastructure.ViewModels
         private HubConnection _hubConnection;
 
         private readonly IAuthenticationService _authenticationService;
-
         private readonly INavigationService _navigationService;
+        private readonly ISecureStorageService _secureStorageService;
 
         private readonly ApiClientService _apiClientService;
-
-        private readonly ISecureStorageService _secureStorageService;
 
         public List<MessageViewModel> Messages { get; private set; }
 
@@ -115,16 +113,9 @@ namespace TaskManagement.Infrastructure.ViewModels
               })
               .Build();
 
-
-
-
             _hubConnection.On<MessageViewModel>("newMessage", FormatMessage) ;
-
             await _hubConnection.StartAsync(cancellationToken);
-
             await _hubConnection.SendAsync("Join", this._room.Name, cancellationToken);
-
-            
         }
 
 
@@ -190,18 +181,15 @@ namespace TaskManagement.Infrastructure.ViewModels
         {
             Messages.Add(message);
             OnPropertyChanged(nameof(Messages));
-
-            var two = 2 + 2;
         }
 
         private void EditRoom()
         {
-            
             if (!IsEditing)
                 IsEditing = true;
             else
                 IsEditing = false;
-            // Обработка нажатия кнопки Edit Room
+
             OnPropertyChanged(nameof(IsEditing));
         }
 
