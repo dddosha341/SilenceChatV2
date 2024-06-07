@@ -20,6 +20,8 @@ public partial class App : Application
         _navigationService = navigationService;
         _authenticationService = authenticationService;
 
+        Application.Current.UserAppTheme = AppTheme.Light;
+
         MainPage = new AppShell();
     }
 
