@@ -1,35 +1,75 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SilenceApp.Pages.RegisterPage"
              Title="Registration">
 
-    <VerticalStackLayout Spacing="8" Padding="16, 8">
+    <ContentPage.Resources>
+        <!-- Define common styles -->
+        <Style x:Key="EntryStyle" TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="#F5F5F5" />
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="PlaceholderColor" Value="LightGray" />
+            <Setter Property="Margin" Value="0, 16" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="WidthRequest" Value="300" />
+        </Style>
+        <Style x:Key="FrameStyle" TargetType="Frame">
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0, 16" />
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="WidthRequest" Value="300" />
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="50" />
+            <Setter Property="Margin" Value="0, 16" />
+            <Setter Property="WidthRequest" Value="300" />
+        </Style>
+    </ContentPage.Resources>
 
-        <Label 
-            Text="Sign in"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <ContentPage.Background>
+        <!-- Futuristic Gradient Background -->
+        <LinearGradientBrush EndPoint="1,1">
+            <GradientStop Color="#0f2027" Offset="0.0" />
+            <GradientStop Color="#2c5364" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
-        <Entry Placeholder="Login"
-               Text="{Binding Login, Mode=OneWayToSource}" />
+    <VerticalStackLayout Spacing="24" Padding="16, 8" HorizontalOptions="Center" VerticalOptions="Center">
+        <Label Text="Sign In"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center"
+               TextColor="White"
+               FontSize="24"
+               FontAttributes="Bold"
+               Margin="0, 0, 0, 24"/>
 
-        <Entry Placeholder="Password"
-               IsPassword="True"
-               Text="{Binding Password, Mode=OneWayToSource}"/>
-
-        <Entry Placeholder="Email"
-                Text="{Binding Email, Mode=OneWayToSource}"/>
-
-        <Entry Placeholder="Full Name"
-                Text="{Binding FullName, Mode=OneWayToSource}"/>
+        <Frame HasShadow="True" CornerRadius="10" BackgroundColor="Transparent" HorizontalOptions="Center">
+            <Entry Placeholder="Login" Text="{Binding Login, Mode=OneWayToSource}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand" />
+        </Frame>
+        <Frame HasShadow="True" CornerRadius="10" BackgroundColor="Transparent" HorizontalOptions="Center">
+            <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password, Mode=OneWayToSource}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand" />
+        </Frame>
+        <Frame HasShadow="True" CornerRadius="10" BackgroundColor="Transparent" HorizontalOptions="Center">
+            <Entry Placeholder="Email" Text="{Binding Email, Mode=OneWayToSource}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand" />
+        </Frame>
+        <Frame HasShadow="True" CornerRadius="10" BackgroundColor="Transparent" HorizontalOptions="Center">
+            <Entry Placeholder="Full Name" Text="{Binding FullName, Mode=OneWayToSource}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand" />
+        </Frame>
 
         <Button Text="Sign Up"
-                Margin="0, 8, 0, 0"
-                Command="{Binding RegisterCommand}"/>
+                BackgroundColor="#007AFF"
+                Command="{Binding RegisterCommand}"
+                Style="{StaticResource ButtonStyle}" />
 
         <Label Text="{Binding Error}"
                TextColor="DarkRed"
-               HorizontalTextAlignment="Center"/>
-
+               HorizontalTextAlignment="Center"
+               Margin="0, 16" />
     </VerticalStackLayout>
 </ContentPage>

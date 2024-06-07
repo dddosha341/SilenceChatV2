@@ -239,6 +239,5 @@ namespace Silence.Infrastructure.ViewModels
             OnPropertyChanged(nameof(IsEditing));
         }
 
-
     }
 }
