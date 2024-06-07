@@ -39,7 +39,7 @@
             <GradientStop Color="#2c5364" Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
-
+    <ScrollView>
     <VerticalStackLayout Spacing="24" Padding="16, 8" HorizontalOptions="Center" VerticalOptions="Center">
         <Label Text="Sign In"
                VerticalOptions="Center" 
@@ -72,4 +72,5 @@
                HorizontalTextAlignment="Center"
                Margin="0, 16" />
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
