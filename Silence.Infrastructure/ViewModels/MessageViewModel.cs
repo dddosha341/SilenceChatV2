@@ -15,5 +15,7 @@ namespace Silence.Infrastructure.ViewModels
         [Required]
         public string Room { get; set; }
         public string Avatar { get; set; }
+
+        public bool IsCurrentUser { get; set; }
     }
 }

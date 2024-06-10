@@ -1,20 +1,13 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using Silence.Infrastructure.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Silence.Infrastructure.ViewModels;
-using System.Windows.Input;
-using System.Data;
-using Silence.Infrastructure.Utils;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Microsoft.IdentityModel.Tokens;
+﻿using System;
 using System.Collections.ObjectModel;
-using Silence.Infrastructure.DataContracts;
 using System.Net;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.IdentityModel.Tokens;
+using Silence.Infrastructure.Services;
+using Silence.Infrastructure.Utils;
+using Silence.Infrastructure.ViewModels;
 
 namespace Silence.Infrastructure.ViewModels
 {
@@ -30,9 +23,9 @@ namespace Silence.Infrastructure.ViewModels
 
         private readonly ApiClientService _apiClientService;
 
-        private string _rotation = "Start";
-
         public ObservableCollection<MessageViewModel> Messages { get; private set; }
+
+        public event EventHandler<string> AlertRequested;
 
         public ChatViewModel(IAuthenticationService authenticationService,
             ApiClientService apiClientService,
@@ -47,23 +40,17 @@ namespace Silence.Infrastructure.ViewModels
             _secureStorageService = secureStorageService;
 
             DeleteRoomCommand = new RelayCommand(DeleteRoom);
-
             EditRoomCommand = new RelayCommand(EditRoom);
-
-            SendMessageCommand = new RelayCommand(SendMessage);
-
-            ApplyCommand = new RelayCommand(Apply);
-
+            SendMessageCommand = new RelayCommand(async () => await SendMessage());
+            ApplyCommand = new RelayCommand(async () => await Apply());
         }
 
         private RoomViewModel _room;
-
         public RoomViewModel Room { get { return _room; } private set { _room = value; } }
 
         private bool _isEditing = false;
 
         private string _newRoomName = string.Empty;
-
         public string NewRoomName
         {
             get { return _newRoomName; }
@@ -74,21 +61,7 @@ namespace Silence.Infrastructure.ViewModels
             }
         }
 
-        public string NewMessage
-        {
-            get; set;
-        }
-
-        public string Rotation
-        {
-            get { return _rotation;  }
-            set
-            {
-                if(value.Equals("End") || value.Equals("Start"))
-                    _rotation = value;
-            }
-        }
-
+        public string NewMessage { get; set; }
 
         public bool IsEditing
         {
@@ -101,44 +74,40 @@ namespace Silence.Infrastructure.ViewModels
                 }
             }
         }
-        public async Task InitializeAsync(int roomId,
-                CancellationToken cancellationToken = default)
-        {
-            var roomResponse = await _apiClientService
-               .GetRoomAsync(roomId, cancellationToken);
 
+        public async Task InitializeAsync(int roomId, CancellationToken cancellationToken = default)
+        {
+            var roomResponse = await _apiClientService.GetRoomAsync(roomId, cancellationToken);
             Update(roomResponse);
 
-
-            var result = await _apiClientService
-                .GetMessagesAsync(this.Room.Name, cancellationToken);
+            var result = await _apiClientService.GetMessagesAsync(this.Room.Name, cancellationToken);
+            var resultName = await _secureStorageService.GetAsync(SecureStorageKey.Username);
 
             Messages = new ObservableCollection<MessageViewModel>();
             foreach (var item in result)
+            {
+                item.IsCurrentUser = item.FromUserName == resultName;
                 Messages.Add(item);
+            }
 
             OnPropertyChanged(nameof(Messages));
 
             var AccessToken = await _secureStorageService.GetAsync(SecureStorageKey.AccessToken);
 
             this._hubConnection = new HubConnectionBuilder()
-            .WithUrl("http://localhost:7071/chatHub",
-            options =>
-            {
-                options.AccessTokenProvider = () => Task.FromResult(AccessToken);
-            })
-            .Build();
+                .WithUrl("http://localhost:7071/chatHub", options =>
+                {
+                    options.AccessTokenProvider = () => Task.FromResult(AccessToken);
+                })
+                .Build();
 
-            _hubConnection.On<MessageViewModel>("newMessage", FormatMessage);
+            _hubConnection.On<MessageViewModel>("newMessage", async (message) => await FormatMessage(message));
             await _hubConnection.StartAsync(cancellationToken);
             await _hubConnection.SendAsync("Join", this._room.Name, cancellationToken);
         }
 
-
         public ICommand DeleteRoomCommand { get; private set; }
-
         public ICommand EditRoomCommand { get; private set; }
-
         public ICommand ApplyCommand { get; private set; }
 
         public ICommand SendMessageCommand { get; private set; }
@@ -154,7 +123,6 @@ namespace Silence.Infrastructure.ViewModels
                 Timestamp = DateTime.Now,
                 FromUserName = admin,
                 Room = this.Room.Name,
-
             };
 
             var response = await _apiClientService.SendMessage(viewModel);
@@ -172,12 +140,18 @@ namespace Silence.Infrastructure.ViewModels
         private void Update(RoomViewModel roomViewModel)
         {
             Room = roomViewModel;
-
             OnPropertyChanged(nameof(Room));
         }
 
         private async void DeleteRoom()
         {
+            string? thisUsername = await _secureStorageService.GetAsync(SecureStorageKey.Username);
+            if (thisUsername != _room.Admin)
+            {
+                AlertRequested?.Invoke(this, "У вас нет прав на изменение этой комнаты.");
+                return;
+            }
+
             var response = await _apiClientService.DeleteRoomAsync(Room.Id);
 
             if (response != null)
@@ -189,34 +163,32 @@ namespace Silence.Infrastructure.ViewModels
             }
         }
 
-        private void FormatMessage(MessageViewModel message)
+        private async Task FormatMessage(MessageViewModel message)
         {
-            var user = _secureStorageService.GetAsync(SecureStorageKey.Username);
+            var username = await _secureStorageService.GetAsync(SecureStorageKey.Username);
 
-            if (message.FromUserName.Equals(user))
-                Rotation = "End";
-            else
-                Rotation = "Start";
-
+            message.IsCurrentUser = message.FromUserName.Equals(username);
 
             Messages.Add(message);
             OnPropertyChanged(nameof(Messages));
-
         }
-        
+
         private void EditRoom()
         {
-            if (!IsEditing)
-                IsEditing = true;
-            else
-                IsEditing = false;
-
+            IsEditing = !IsEditing;
             OnPropertyChanged(nameof(IsEditing));
         }
 
-        private async void Apply()
+        private async Task Apply()
         {
-            if (NewRoomName is not null)
+            string? thisUsername = await _secureStorageService.GetAsync(SecureStorageKey.Username);
+            if (thisUsername != _room.Admin)
+            {
+                AlertRequested?.Invoke(this, "У вас нет прав на изменение этой комнаты.");
+                return;
+            }
+
+            if (!string.IsNullOrWhiteSpace(NewRoomName))
             {
                 var newRoomModel = new RoomViewModel()
                 {
@@ -224,20 +196,17 @@ namespace Silence.Infrastructure.ViewModels
                     Admin = this.Room.Admin,
                     Name = NewRoomName
                 };
-                var response = await _apiClientService.EditRoomAsync(
-                    this.Room.Id,
-                    newRoomModel
-                    );
+
+                var response = await _apiClientService.EditRoomAsync(this.Room.Id, newRoomModel);
+
                 if (response.IsSuccessStatusCode)
                 {
                     Update(newRoomModel);
                 }
             }
 
-
-            IsEditing = false; 
+            IsEditing = false;
             OnPropertyChanged(nameof(IsEditing));
         }
-
     }
 }

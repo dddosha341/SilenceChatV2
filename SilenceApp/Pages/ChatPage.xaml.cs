@@ -1,32 +1,38 @@
 ﻿using Silence.Infrastructure.ViewModels;
 
-namespace SilenceApp.Pages;
-
-[QueryProperty(nameof(RoomId), ChatViewModel.ChatIdQueryKey)]
-public partial class ChatPage : ContentPage
+namespace SilenceApp.Pages
 {
-
-    private readonly ChatViewModel _viewModel;
-
-    public int RoomId { get; set; }
-
-    public ChatPage()
+    [QueryProperty(nameof(RoomId), ChatViewModel.ChatIdQueryKey)]
+    public partial class ChatPage : ContentPage
     {
-        InitializeComponent();
-        BindingContext = _viewModel = MauiProgram.Services.GetService<ChatViewModel>();
-    }
+        private readonly ChatViewModel _viewModel;
 
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
+        public int RoomId { get; set; }
 
-        try
+        public ChatPage()
         {
-            await _viewModel.InitializeAsync(RoomId);
+            InitializeComponent();
+            BindingContext = _viewModel = MauiProgram.Services.GetService<ChatViewModel>();
+            _viewModel.AlertRequested += OnAlertRequested;
         }
-        catch
+
+        private async void OnAlertRequested(object sender, string message)
         {
-            // TODO: handle this
+            await DisplayAlert("Ошибка", message, "ОК");
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            try
+            {
+                await _viewModel.InitializeAsync(RoomId);
+            }
+            catch
+            {
+                // TODO: handle this
+            }
         }
     }
 }
