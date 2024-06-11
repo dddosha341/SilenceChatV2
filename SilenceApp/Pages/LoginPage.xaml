@@ -34,7 +34,7 @@
             <GradientStop Color="#2c5364" Offset="1.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
-
+    <ScrollView>
     <VerticalStackLayout Spacing="24" Padding="256, 64" HorizontalOptions="Center" VerticalOptions="Center">
         <!-- Futuristic Entry Fields -->
         <Entry Placeholder="Login" Text="{Binding Login, Mode=TwoWay}" Style="{StaticResource EntryStyle}" HorizontalOptions="FillAndExpand" />
@@ -47,4 +47,5 @@
         <!-- Error Message -->
         <Label Text="{Binding Error}" TextColor="DarkRed" HorizontalTextAlignment="Center" Margin="0, 16, 0, 0" />
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
