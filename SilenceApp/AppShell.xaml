@@ -31,6 +31,10 @@
         Title="Home"
         ContentTemplate="{DataTemplate pages:WelcomePage}"
         Route="welcome"/>
+    <ShellContent
+        Title="Edit Profile"
+        ContentTemplate="{DataTemplate pages:EditProfilePage}"
+        Route="editProfile"/>
 
     <MenuItem
         Text="Log Out"

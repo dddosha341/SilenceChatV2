@@ -6,7 +6,7 @@
         <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
         <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
         <OutputType>Exe</OutputType>
-        <RootNamespace>TaskManagementApp</RootNamespace>
+        <RootNamespace>SilenceApp</RootNamespace>
         <UseMaui>true</UseMaui>
         <SingleProject>true</SingleProject>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -73,9 +73,15 @@
       <Compile Update="Pages\ChatPage.xaml.cs">
         <DependentUpon>ChatPage.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Pages\EditProfilePage.xaml.cs">
+        <DependentUpon>EditProfilePage.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
     <ItemGroup>
       <MauiXaml Update="Pages\ChatPage.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="Pages\EditProfilePage.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
     </ItemGroup>

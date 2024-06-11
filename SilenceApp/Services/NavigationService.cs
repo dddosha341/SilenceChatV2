@@ -33,6 +33,7 @@ internal static class RouteExtensions
         Route.Register => "register",
         Route.Welcome => "welcome",
         Route.ChatRoom => "chatRoom",
+        Route.EditProfile => "editProfile",
         _ => throw new NotSupportedException($"Route {route} is not supported")
     };
 }

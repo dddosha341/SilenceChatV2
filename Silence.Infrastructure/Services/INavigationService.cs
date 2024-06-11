@@ -26,5 +26,6 @@ public enum Route
     Register,
     Welcome,
     ChatRoom,
+    EditProfile,
 }
 
