@@ -48,7 +48,7 @@ public static class MauiProgram
                 var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
 
 #if WINDOWS
-                return new(logger, httpClientFactory, "http://192.168.1.65:3000");
+                return new(logger, httpClientFactory, "http://localhost:7071");
 #elif ANDROID
                 return new(logger, httpClientFactory, "http://192.168.1.65:3000"); // specify for real android phone manually
 #endif
