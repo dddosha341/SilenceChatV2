@@ -34,10 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Silence.Infrastructure\Silence.Infrastructure.csproj" />
   </ItemGroup>
 

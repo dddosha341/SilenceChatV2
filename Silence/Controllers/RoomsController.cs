@@ -11,6 +11,8 @@ using Silence.Web.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Silence.Infrastructure.ViewModels;
 using System.Security.Claims;
+using Silence.Web.Services;
+
 
 namespace Silence.Web.Controllers
 {
@@ -19,15 +21,15 @@ namespace Silence.Web.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly DbService _db;
         private readonly IMapper _mapper;
         private readonly IHubContext<ChatHub> _hubContext;
 
-        public RoomsController(AppDbContext context,
+        public RoomsController(DbService db,
             IMapper mapper,
             IHubContext<ChatHub> hubContext)
         {
-            _context = context;
+            _db = db;
             _mapper = mapper;
             _hubContext = hubContext;
         }
@@ -40,7 +42,7 @@ namespace Silence.Web.Controllers
             if (HttpContext.User.Identity is ClaimsIdentity identity)
             {
                 var username = identity.FindFirst(ClaimTypes.Name)?.Value;
-                user = _context.Users.SingleOrDefault(u => u.UserName == username);
+                user = _db.GetUser(username);
             }
 
             if (user is null)
@@ -48,9 +50,7 @@ namespace Silence.Web.Controllers
                 return Unauthorized();
             }
 
-           var rooms = _context.Rooms
-                .Include(r => r.Admin)
-                .ToListAsync().Result;
+            var rooms = _db.GetRooms();
 
             var roomsViewModel = _mapper.Map<IEnumerable<Room>, IEnumerable<RoomViewModel>>(rooms);
 
@@ -67,7 +67,7 @@ namespace Silence.Web.Controllers
             if (HttpContext.User.Identity is ClaimsIdentity identity)
             {
                 var username = identity.FindFirst(ClaimTypes.Name)?.Value;
-                user = _context.Users.SingleOrDefault(u => u.UserName == username);
+                user = _db.GetUser(username);
             }
 
             if (user is null)
@@ -75,7 +75,7 @@ namespace Silence.Web.Controllers
                 return Unauthorized();
             }
 
-            var room = await _context.Rooms.FindAsync(id);
+            var room = _db.GetRoom(id);
             if (room == null)
                 return NotFound();
 
@@ -87,18 +87,18 @@ namespace Silence.Web.Controllers
         public async Task<ActionResult<Room>> Create(RoomViewModel viewModel)
         {
 
-            if (_context.Rooms.Any(r => r.Name == viewModel.Name))
+            if (_db.IsExistsRoom(viewModel.Name))
                 return BadRequest("Invalid room name or room already exists");
 
-            var user = _context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+            var user = _db.GetUser(User.Identity.Name);
             var room = new Room()
             {
                 Name = viewModel.Name,
                 Admin = user
             };
 
-            _context.Rooms.Add(room);
-            await _context.SaveChangesAsync();
+            _db.AddRoom(room);
+            _db.SaveChanges();
 
             var createdRoom = _mapper.Map<Room, RoomViewModel>(room);
             await _hubContext.Clients.All.SendAsync("addChatRoom", createdRoom);
@@ -109,19 +109,16 @@ namespace Silence.Web.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Edit(int id, RoomViewModel viewModel)
         {
-            if (_context.Rooms.Any(r => r.Name == viewModel.Name))
+            if (_db.IsExistsRoom(viewModel.Name))
                 return BadRequest("Invalid room name or room already exists");
 
-            var room = await _context.Rooms
-                .Include(r => r.Admin)
-                .Where(r => r.Id == id && r.Admin.UserName == User.Identity.Name)
-                .FirstOrDefaultAsync();
+            var room = _db.GetRoomByAdmin(id, User.Identity.Name).Result;
 
             if (room == null)
                 return NotFound();
 
             room.Name = viewModel.Name;
-            await _context.SaveChangesAsync();
+            _db.SaveChanges();
 
             var updatedRoom = _mapper.Map<Room, RoomViewModel>(room);
             await _hubContext.Clients.All.SendAsync("updateChatRoom", updatedRoom);
@@ -132,16 +129,13 @@ namespace Silence.Web.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var room = await _context.Rooms
-                .Include(r => r.Admin)
-                .Where(r => r.Id == id && r.Admin.UserName == User.Identity.Name)
-                .FirstOrDefaultAsync();
+            var room = _db.GetRoomByAdmin(id, User.Identity.Name).Result;
 
             if (room == null)
                 return NotFound();
 
-            _context.Rooms.Remove(room);
-            await _context.SaveChangesAsync();
+            _db.RemoveRoom(room);
+            _db.SaveChanges();
 
             await _hubContext.Clients.All.SendAsync("removeChatRoom", room.Id);
             await _hubContext.Clients.Group(room.Name).SendAsync("onRoomDeleted");

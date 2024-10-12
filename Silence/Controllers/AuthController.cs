@@ -14,23 +14,23 @@ public class AuthController : ControllerBase
 {
     private readonly AuthService _authService;
     private readonly ConfigurationService _configurationService;
-    private readonly AppDbContext _context;
+    private readonly DbService _db;
 
     public AuthController(
         AuthService authService,
         ConfigurationService configurationService,
-        AppDbContext context
+        DbService db
         )
     {
         _authService = authService;
         _configurationService = configurationService;
-        _context = context;
+        _db = db;
     }
 
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest request)
     {
-        var user = _context.Users.SingleOrDefault(u => u.UserName == request.UserName);
+        var user = _db.GetUser(request.UserName);
         if (user == null ||
             !_authService.VerifyPasswordHash(
                 request.Password, user.PasswordHash, user.Salt))
@@ -44,7 +44,7 @@ public class AuthController : ControllerBase
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(
             _configurationService.JwtRefreshTokenExpirationDays);
-        _context.SaveChanges();
+        _db.SaveChanges();
 
         return Ok(new LoginResponse
         {
@@ -60,7 +60,7 @@ public class AuthController : ControllerBase
     {
         var principal = _authService.GetPrincipalFromExpiredToken(request.AccessToken);
         var username = principal.Identity.Name; 
-        var user = _context.Users.SingleOrDefault(u => u.UserName == username);
+        var user = _db.GetUser(username);
 
         if (user == null || user.RefreshToken != request.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
         {
@@ -71,7 +71,7 @@ public class AuthController : ControllerBase
         var newRefreshToken = _authService.GenerateRefreshToken();
 
         user.RefreshToken = newRefreshToken;
-        _context.SaveChanges();
+        _db.SaveChanges();
 
         return Ok(new RefreshTokenResponse
         {
@@ -83,13 +83,13 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register([FromBody] RegisterRequest request)
     {
-        var existingUser = _context.Users.FirstOrDefault(u => u.UserName == request.Username);
+        var existingUser = _db.GetUser(request.Username);
         if (existingUser != null)
         {
             return BadRequest("Username already exists.");
         }
         _authService.CreatePasswordHash(request.Password,
-       out string passwordHash, out string passwordSalt);
+        out string passwordHash, out string passwordSalt);
 
         var user = new User
         {
@@ -102,8 +102,7 @@ public class AuthController : ControllerBase
 
         try
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            _db.AddUser(user);
         }
         catch (Exception ex)
         {
@@ -120,7 +119,7 @@ public class AuthController : ControllerBase
         if (HttpContext.User.Identity is ClaimsIdentity identity)
         {
             var username = identity.FindFirst(ClaimTypes.Name)?.Value;
-            var user = _context.Users.SingleOrDefault(u => u.UserName == username);
+            var user = _db.GetUser(username);
 
             if (user is null)
             {
@@ -144,7 +143,7 @@ public class AuthController : ControllerBase
         if (HttpContext.User.Identity is ClaimsIdentity identity)
         {
             var username = identity.FindFirst(ClaimTypes.Name)?.Value;
-            var user = _context.Users.SingleOrDefault(u => u.UserName == username);
+            var user = _db.GetUser(username);   
 
             if (user is null)
             {
@@ -153,7 +152,7 @@ public class AuthController : ControllerBase
 
             user.RefreshToken = null;
             user.RefreshTokenExpiryTime = null;
-            _context.SaveChanges();
+            _db.SaveChanges();
 
             return Ok();
         }
